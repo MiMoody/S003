@@ -31,11 +31,11 @@ int main()
             push ecx
 
             StartDelete :
-        cmp First, 1
+        cmp First, 0
             jl StrNoChange
 
             LengthDelete :
-        cmp Len, 1
+        cmp Len, 0
             jl StrNoChange
 
             FirstBiggerLength :
@@ -50,7 +50,7 @@ int main()
             jg StrNoChange
 
                 add esp, 8
-                mov ecx, 1
+                mov ecx, 0
                 dec esi
 
                 lea esi, [str]
