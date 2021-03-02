@@ -3,15 +3,80 @@
 
 int main()
 {
-    char str[] = "Hello,World";
+    char str[256];
     char s[256];
-    int First = 2; // с какого индекса удаляем
-    int Len = 3; // длина удаления
+    int First; // с какого индекса удаляем
+    int Len ; // длина удаления
+    int counters;
     char f[] = "%s";
+    char fd[] = "%d";
+    std::cout << "Enter your string:";
+    char outStr1[256] = "Enter the index you want to start deleting from: ";
+    char outStr2[256] = "Enter the length of the deletion: ";
+
     __asm
     {
         lea esi, str
+
+        push esi
+
         lea ecx, f
+
+        push ecx
+
+        call scanf
+
+        add esp, 8
+
+        lea ebx, outStr1
+
+        push ebx
+
+        lea ecx, f
+
+        push ecx
+
+        call printf
+
+        add esp, 8
+
+        lea ebx, First
+
+        push ebx
+
+        lea ecx, fd
+
+        push ecx
+
+        call scanf
+
+        add esp, 8
+        
+        lea ebx, outStr2
+
+        push ebx
+
+        lea ecx, f
+
+        push ecx
+
+        call printf
+
+        add esp, 8
+
+        lea ebx, Len
+
+        push ebx
+
+        lea ecx, fd
+
+        push ecx
+
+        call scanf
+
+        add esp, 8
+
+        lea ecx, fd
         mov ecx, -1
         dec esi
 
@@ -32,7 +97,9 @@ int main()
 
             StartDelete :
         cmp First, 0
-            jl StrNoChange
+            jge LengthDelete
+            
+            mov First,0
 
             LengthDelete :
         cmp Len, 0
@@ -42,14 +109,8 @@ int main()
         cmp First, ecx
             jg StrNoChange
 
-            add edx, Len
-
-            CheckLengthDelete :
-            add ecx, 1
-            cmp edx, ecx
-            jg StrNoChange
-
                 add esp, 8
+                mov counters,ecx
                 mov ecx, 0
                 dec esi
 
@@ -59,7 +120,7 @@ int main()
 
                 mov edx, First
 
-                cmp edx, 2
+                cmp edx, 1
                 jl AddLength
 
              StartWrite :
@@ -71,8 +132,12 @@ int main()
 
              AddLength :
             add edx, Len
+            mov eax,counters
+            cmp edx, eax
+            jbe EndWrite
+            mov edx, eax
             
-             EndWrite :
+                EndWrite :
             inc esi
                 inc ecx
                 cmp ecx, edx
@@ -106,6 +171,7 @@ int main()
                 pop edi
                 pop esi
     }
+    std::cout << "Your line: ";
     std::cout << s;
 }
 
